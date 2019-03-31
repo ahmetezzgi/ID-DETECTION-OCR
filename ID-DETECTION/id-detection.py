@@ -15,40 +15,38 @@ while True:
     
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     
-    # this calculate the histogram of the image you input
-    # if this is under/below a certain value (which depend of the colors in the image), a certain thresh will be choosed among another
+    
     hist, bins = np.histogram(hsv.ravel(), 256, [0, 256])
-    #print(hist[-1])
+    
 
-        # binary
+        
     ret, thresh = cv2.threshold(hsv[:, :, 0], 55, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
        
 
-        # dilation
+        
     kernel = np.ones((1, 1), np.uint8)
     img_dilation = cv2.dilate(thresh, kernel, iterations=1)
-        #cv2.imshow('dilated', img_dilation)
+       
         
 
-        # find contours
+        
     ctrs, hier = cv2.findContours(img_dilation.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        # sort contours
+       
     sorted_ctrs = sorted(ctrs, key=lambda ctr: cv2.boundingRect(ctr)[0])
 
-    #if hist[-1] < 25000:
+    
 
     for i, ctr in enumerate(sorted_ctrs):
-            # Get bounding box
+           
         x, y, w, h = cv2.boundingRect(ctr)
 
-            # Getting ROI
+            
         roi = image[y:y + h, x:x + w]
 
-            # show ROI
-            # cv2.imshow('segment no:'+str(i),roi)
+           
         cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            # cv2.waitKey(0)
+            
 
         if w > 400 and h > 300:
             out = 'outs\\roi{}.png'.format(i)
@@ -109,8 +107,7 @@ while True:
                     bulunan = 'fotolar\\{}.png'.format(i)
                     font = cv2.FONT_HERSHEY_SIMPLEX
                     cv2.putText(image,'TC BULUNDU',(100,200), font, 2,(0,0,255),2,cv2.LINE_AA)
-               			#font = cv2.FONT_HERSHEY_SIMPLEX
- 										#cv2.putText(img,'OpenCV',(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
+           
                     cv2.imwrite(bulunan,roi)
                 else:
                     print(kosul1)
@@ -119,7 +116,6 @@ while True:
                     sum_tekhane = 0
                     sum_cifthane = 0
                     print('TC bulunamadi')
-                    #print(sum_onhane)
                     print('\n-----------------------')
                         
 
